@@ -1,8 +1,8 @@
 import './App.css'
 import './components/button.css'
-import memberReducer from './reducer/memebr-reducer'
+// import memberReducer from './reducer/memebr-reducer'
 import { useReducer } from 'react'
-import Button from './components/Button'
+import { useImmer } from 'use-immer'
 
 function App() {
   const initialMembers = [
@@ -10,19 +10,28 @@ function App() {
     { name: 'Joe', title: 'FrontEnd' },
     { name: 'rolling', title: 'BackEnd' },
   ]
-  const [members, dispatch] = useReducer(memberReducer, initialMembers)
+  const [members, updateMember] = useImmer(initialMembers)
   const handleAdded = () => {
     const name = prompt('Who is the new member?')
-    dispatch({ type: 'added', name })
+    updateMember((m) => {
+      m.push({ name, title: 'New' })
+    })
   }
   const handleUpdated = () => {
     const name = prompt('Name u wanna make it change')
     const newName = prompt('New name')
-    dispatch({ type: 'updated', name, newName })
+    updateMember((members) => {
+      const member = members.find((m) => m.name === name)
+      member.name = newName
+    })
   }
   const handleDeleted = () => {
     const name = prompt('Who u wanna delete')
-    dispatch({ type: 'deleted', name })
+    updateMember((members) => {
+      const idx = members.findIndex((m) => m.name === name)
+      console.log(idx)
+      idx === -1 || members.splice(idx, 1)
+    })
   }
 
   return (
