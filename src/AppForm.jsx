@@ -13,7 +13,7 @@ export default function AppForm() {
   return (
     <form onSubmit={handleSubmit}>
       <input placeholder="name" name="name" onChange={handleChange}></input>
-      <input placeholder="email" name="email" onChange={handleChange}></input>
+      <input placeholder="email" name='email' onChange={handleChange}></input>
       <button>Submit</button>
     </form>
   )
